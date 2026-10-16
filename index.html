@@ -230,10 +230,18 @@ form.addEventListener("submit", async event => {
 
   if (!form.reportValidity()) return;
 
-  if (!SCRIPT_URL ||
-      SCRIPT_URL === "  if (!SCRIPT_URL ||
-      SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwhoFWWphlxxK4qBB-bD5d2xAPP_m_CMPdpXK0jpGd4KkMa2aOvMG34Xb6jA-bfPO92jw/exec" ||
-      !SCRIPT_URL.endsWith("/exec")) {
+ if (
+  !SCRIPT_URL ||
+  SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE" ||
+  !SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
+  !SCRIPT_URL.endsWith("/exec")
+) {
+  showStatus(
+    "Setup is incomplete. Please check the Google Apps Script Web App URL.",
+    "error"
+  );
+  return;
+}
     showStatus(
       "Setup is incomplete. The organiser must enter the active Google Apps Script Web App URL ending in /exec.",
       "error"
