@@ -140,7 +140,7 @@ Colonial War Memorial Hospital · Fiji
 // Previously supplied deployment URL.
 // If your current active deployment URL differs, replace it here.
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwhoFWWphlxxK4qBB-bD5d2xAPP_m_CMPdpXK0jpGd4KkMa2aOvMG34Xb6jA-bfPO92jw/exec";
+  "https://script.google.com/macros/s/AKfycbwOwVU6etStlO1-xjMRuAw9JsAZn6vrg0ec7jfPd7a2Z9JoJC9VTq5RXpfy36bqrsyAdQ/exec";
 
 const canvas = document.getElementById("signature");
 const ctx = canvas.getContext("2d");
@@ -231,7 +231,13 @@ form.addEventListener("submit", async event => {
   if (!form.reportValidity()) return;
 
   if (!SCRIPT_URL ||
+      SCRIPT_URL === "  if (!SCRIPT_URL ||
       SCRIPT_URL === "https://script.google.com/macros/s/AKfycbwhoFWWphlxxK4qBB-bD5d2xAPP_m_CMPdpXK0jpGd4KkMa2aOvMG34Xb6jA-bfPO92jw/exec" ||
+      !SCRIPT_URL.endsWith("/exec")) {
+    showStatus(
+      "Setup is incomplete. The organiser must enter the active Google Apps Script Web App URL ending in /exec.",
+      "error"
+    );" ||
       !SCRIPT_URL.endsWith("/exec")) {
     showStatus(
       "Setup is incomplete. The organiser must enter the active Google Apps Script Web App URL ending in /exec.",
