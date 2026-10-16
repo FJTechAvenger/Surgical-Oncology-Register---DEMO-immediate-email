@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,7 +21,8 @@ h1{font-size:clamp(1.7rem,5vw,2.25rem);line-height:1.12;margin:10px 0}
 h2{font-size:1.05rem;color:var(--deep);margin:22px 0 12px;padding-bottom:7px;border-bottom:2px solid #f3d7e5}
 .field{margin:14px 0}
 label{display:block;font-weight:bold;margin-bottom:6px}
-input,select,textarea{width:100%;font:inherit;padding:12px;border:1px solid #d8c8d2;border-radius:9px;background:#fff}
+input,select,textarea{font:inherit;padding:12px;border:1px solid #d8c8d2;border-radius:9px;background:#fff}
+.field input,.field select,.field textarea{width:100%}
 input:focus,select:focus,textarea:focus{outline:3px solid #b5166320;border-color:var(--pink)}
 .note{background:#f1f8f8;border-left:4px solid var(--teal);padding:12px;border-radius:7px;font-size:.9rem;margin:16px 0}
 .sigbox{border:1px dashed #c9a8b9;border-radius:10px;padding:12px;background:#fffafd}
@@ -29,9 +31,15 @@ canvas{width:100%;height:150px;display:block;touch-action:none;background:#fff;b
 button{border:0;border-radius:9px;padding:12px 18px;font:inherit;font-weight:bold;cursor:pointer}
 .clear{background:#f2edf2;color:#49374a}
 .submit{width:100%;margin-top:18px;background:linear-gradient(100deg,var(--pink),#63338d);color:#fff}
-.status{display:none;padding:12px;border-radius:8px;background:#fff2d9;color:#754d00;margin-top:14px}
+button:disabled{opacity:.65;cursor:wait}
+.status{display:none;padding:12px;border-radius:8px;background:#fff2d9;color:#754d00;margin-top:14px;overflow-wrap:anywhere}
+.status.error{display:block;background:#fff0f0;color:#8d1515}
+.status.info{display:block;background:#fff2d9;color:#754d00}
 footer{text-align:center;color:var(--muted);font-size:.82rem;padding:18px 8px 0}
 .small{font-size:.82rem;color:var(--muted)}
+.consent{display:flex;gap:9px;align-items:flex-start}
+.consent input{width:auto;flex:0 0 auto;margin-top:4px}
+.consent label{font-size:.82rem;font-weight:normal}
 @media(min-width:560px){.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two .field{margin-top:8px}}
 </style>
 </head>
@@ -44,159 +52,247 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:18px 8px 0}
 <div class="theme">“Every Story is Unique, Every Journey Matters”</div>
 <p>Oncology Department · Colonial War Memorial Hospital</p>
 </header>
+
 <section class="content">
-<div class="eventbar"><strong>Topic: Surgical Oncology</strong><br>Friday, 23 October 2026<br>Colonial War Memorial Hospital · Midwifery Classroom</div>
+<div class="eventbar">
+<strong>Topic: Surgical Oncology</strong><br>
+Friday, 23 October 2026<br>
+Colonial War Memorial Hospital · Midwifery Classroom
+</div>
+
 <p>Welcome. Please complete the form below to register your attendance.</p>
-<div class="note"><strong>Registration time limit:</strong> DEMO MODE: Each successful submission is emailed immediately to the configured organiser inbox. Registration closes 4 hours after the first successful registration.</div>
+
+<div class="note">
+<strong>Registration status:</strong> OPEN. Registration remains open until the organiser manually changes the arrangement. Please complete all required fields.
+</div>
+
 <form id="registrationForm">
 <h2>Attendee Details</h2>
+
 <div class="field">
 <label for="fullName">Full name *</label>
-<input id="fullName" name="fullName" autocomplete="name" required placeholder="Enter your full name">
+<input id="fullName" name="fullName" autocomplete="name" maxlength="120" required placeholder="Enter your full name">
 </div>
+
 <div class="two">
 <div class="field">
 <label for="department">Department / Organisation *</label>
-<input id="department" name="department" required placeholder="Department or organisation">
+<input id="department" name="department" maxlength="160" required placeholder="Department or organisation">
 </div>
+
 <div class="field">
 <label for="email">Email address *</label>
-<input id="email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+<input id="email" name="email" type="email" autocomplete="email" maxlength="200" required placeholder="name@example.com">
 </div>
 </div>
+
 <div class="field">
 <label for="phone">Contact number *</label>
-<input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="Enter contact number">
+<input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required placeholder="Enter contact number">
 </div>
+
 <div class="field">
-<label for="cpd">EDP Number *</label>
-<input id="edp" name="edp" required placeholder="Enter your EDP number">
+<label for="edp">EDP Number *</label>
+<input id="edp" name="edp" maxlength="80" required placeholder="Enter your EDP number">
 </div>
+
 <h2>Electronic Signature</h2>
 <p class="small">Sign in the box using your finger or mouse.</p>
+
 <div class="sigbox">
 <canvas id="signature" aria-label="Draw your signature here"></canvas>
-<div class="sigactions"><button class="clear" type="button" id="clearSignature">Clear signature</button></div>
+<div class="sigactions">
+<button class="clear" type="button" id="clearSignature">Clear signature</button>
 </div>
-<div class="note"><strong>Privacy:</strong> Registration information should be used only for event administration and approved attendance or CPD records. Please do not enter patient information.</div>
-<label class="small"><input type="checkbox" id="consent" required style="width:auto"> I confirm that the information provided is accurate and may be used for event registration and attendance records. *</label>
-<button class="submit" type="submit">Submit Registration</button>
+</div>
+
+<div class="note">
+<strong>Privacy:</strong> Registration information should be used only for event administration and approved attendance or CPD records. Please do not enter patient information.
+</div>
+
+<div class="consent">
+<input type="checkbox" id="consent" required>
+<label for="consent">I confirm that the information provided is accurate and may be used for event registration and attendance records. *</label>
+</div>
+
+<button class="submit" id="submitButton" type="submit">Submit Registration</button>
 <div class="status" id="status" role="status" aria-live="polite"></div>
 </form>
 </section>
-<footer>Organised by the Oncology Department<br>Colonial War Memorial Hospital · Fiji</footer>
+
+<footer>
+Organised by the Oncology Department<br>
+Colonial War Memorial Hospital · Fiji
+</footer>
 </main>
+
 <script>
 /*
-  SETUP REQUIRED:
-  1. Deploy the accompanying Google Apps Script as a Web App.
-  2. Paste its /exec URL into SCRIPT_URL below.
-  3. Publish this page and test a submission before using it at the event.
-*/
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyh1XoKmHFVWBXHZQrcaXzB4YxFe_vuQMtsgfk8dUUwbzLfLXnpH6QhY4Zeyimqf00JVg/exec";
+  CWM Hospital Surgical Oncology Registration
 
-const canvas = document.getElementById('signature');
-const ctx = canvas.getContext('2d');
-let drawing = false, hasSignature = false;
+  Before publishing:
+  1. Confirm SCRIPT_URL is the active Google Apps Script /exec URL.
+  2. Ensure the Apps Script expects fullName, department, email,
+     phone, edp, signature and consent.
+  3. Test the spreadsheet, Drive signature and both email recipients.
+*/
+
+// Previously supplied deployment URL.
+// If your current active deployment URL differs, replace it here.
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbzTrfVMu6ougXLStCr86SN1gE0LC_zKu0dMofrBVTKh3o6feDAtPhmkBylVFoIvGblC0g/exec";
+
+const canvas = document.getElementById("signature");
+const ctx = canvas.getContext("2d");
+const form = document.getElementById("registrationForm");
+const statusBox = document.getElementById("status");
+const submitButton = document.getElementById("submitButton");
+
+let drawing = false;
+let hasSignature = false;
+let lastPoint = null;
 
 function resizeCanvas() {
   const ratio = window.devicePixelRatio || 1;
   const rect = canvas.getBoundingClientRect();
-  const previous = hasSignature ? canvas.toDataURL('image/png') : null;
-  canvas.width = Math.max(1, Math.floor(rect.width * ratio));
-  canvas.height = Math.max(1, Math.floor(150 * ratio));
+  const oldImage = hasSignature ? canvas.toDataURL("image/png") : null;
+
+  canvas.width = Math.max(1, Math.round(rect.width * ratio));
+  canvas.height = Math.max(1, Math.round(150 * ratio));
+
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.lineWidth = 2; ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.strokeStyle = '#17365d';
-  if (previous) {
-    const img = new Image();
-    img.onload = () => ctx.drawImage(img, 0, 0, rect.width, 150);
-    img.src = previous;
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#17365d";
+
+  if (oldImage) {
+    const image = new Image();
+    image.onload = () => ctx.drawImage(image, 0, 0, rect.width, 150);
+    image.src = oldImage;
   }
 }
-function point(e) {
-  const r = canvas.getBoundingClientRect();
-  return { x: e.clientX - r.left, y: e.clientY - r.top };
+
+function point(event) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
 }
-canvas.addEventListener('pointerdown', e => {
-  drawing = true; hasSignature = true;
-  canvas.setPointerCapture(e.pointerId);
-  const p = point(e); ctx.beginPath(); ctx.moveTo(p.x, p.y);
+
+canvas.addEventListener("pointerdown", event => {
+  event.preventDefault();
+  drawing = true;
+  hasSignature = true;
+  lastPoint = point(event);
+  canvas.setPointerCapture(event.pointerId);
+  ctx.beginPath();
+  ctx.moveTo(lastPoint.x, lastPoint.y);
 });
-canvas.addEventListener('pointermove', e => {
+
+canvas.addEventListener("pointermove", event => {
   if (!drawing) return;
-  const p = point(e); ctx.lineTo(p.x, p.y); ctx.stroke();
+  event.preventDefault();
+
+  const current = point(event);
+  ctx.beginPath();
+  ctx.moveTo(lastPoint.x, lastPoint.y);
+  ctx.lineTo(current.x, current.y);
+  ctx.stroke();
+  lastPoint = current;
 });
-['pointerup','pointercancel','lostpointercapture'].forEach(ev =>
-  canvas.addEventListener(ev, () => drawing = false)
-);
-document.getElementById('clearSignature').addEventListener('click', () => {
-  ctx.clearRect(0, 0, canvas.width, canvas.height); hasSignature = false;
+
+function stopDrawing() {
+  drawing = false;
+  lastPoint = null;
+}
+
+["pointerup", "pointercancel", "lostpointercapture"].forEach(eventName => {
+  canvas.addEventListener(eventName, stopDrawing);
 });
-window.addEventListener('resize', resizeCanvas);
+
+document.getElementById("clearSignature").addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSignature = false;
+});
+
+window.addEventListener("resize", resizeCanvas);
 resizeCanvas();
 
-const form = document.getElementById('registrationForm');
-const statusBox = document.getElementById('status');
-form.addEventListener('submit', async e => {
-  e.preventDefault();
-  statusBox.style.display = 'block';
-
-  if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbyh1XoKmHFVWBXHZQrcaXzB4YxFe_vuQMtsgfk8dUUwbzLfLXnpH6QhY4Zeyimqf00JVg/exec") {
-    statusBox.textContent =if (
-  !SCRIPT_URL ||
-  !SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
-  !SCRIPT_URL.endsWith("/exec")
-) {
-  statusBox.textContent =
-    "Setup is incomplete. Please contact the organiser.";
-  return;
+function showStatus(message, type) {
+  statusBox.textContent = message;
+  statusBox.className = "status " + type;
 }
-}App URL first.';
-    return;
-  }
-  if (!hasSignature) {
-    statusBox.textContent = 'Please add your signature before submitting.';
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!form.reportValidity()) return;
+
+  if (!SCRIPT_URL ||
+      SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE" ||
+      !SCRIPT_URL.endsWith("/exec")) {
+    showStatus(
+      "Setup is incomplete. The organiser must enter the active Google Apps Script Web App URL ending in /exec.",
+      "error"
+    );
     return;
   }
 
-  const submitButton = form.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-  submitButton.textContent = 'Submitting…';
-  statusBox.textContent = 'Sending your registration…';
+  if (!hasSignature) {
+    showStatus("Please add your electronic signature before submitting.", "error");
+    return;
+  }
 
   const payload = {
-    fullName: document.getElementById('fullName').value.trim(),
-    department: document.getElementById('department').value.trim(),
-    email: document.getElementById('email').value.trim(),
-    phone: document.getElementById('phone').value.trim(),
-    edp: document.getElementById('edp').value.trim(),
-    signature: canvas.toDataURL('image/png'),
-    consent: document.getElementById('consent').checked,
-    event: 'Cancer Awareness & Patient Care Education Programme',
-    topic: 'Surgical Oncology',
-    eventDate: 'Friday, 23 October 2026',
-    venue: 'Colonial War Memorial Hospital – Midwifery Classroom'
+    fullName: document.getElementById("fullName").value.trim(),
+    department: document.getElementById("department").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    edp: document.getElementById("edp").value.trim(),
+    signature: canvas.toDataURL("image/png"),
+    consent: document.getElementById("consent").checked,
+    event: "Cancer Awareness & Patient Care Education Programme",
+    topic: "Surgical Oncology",
+    eventDate: "Friday, 23 October 2026",
+    venue: "Colonial War Memorial Hospital – Midwifery Classroom"
   };
 
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting…";
+  showStatus("Sending your registration for processing…", "info");
+
   try {
-    // Apps Script web apps commonly do not expose CORS-readable responses.
-    // no-cors lets the browser send the form; the page cannot verify server-side delivery.
+    /*
+      no-cors allows the browser to send the request but does not let
+      this page read the Apps Script response. A completed fetch is
+      NOT proof that the sheet, signature or emails were processed.
+    */
     await fetch(SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
       body: JSON.stringify(payload)
     });
-    statusBox.textContent = 'Your registration has been sent for processing. If you do not receive confirmation from the organisers, please contact the Oncology Department.';
-    form.reset();
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    hasSignature = false;
-  } catch (err) {
-    statusBox.textContent = 'We could not send your registration. Please check your connection and try again, or contact the Oncology Department.';
+
+    showStatus(
+      "The request was sent from this page, but delivery cannot be verified here. Please contact the Oncology Department if the organiser cannot confirm your registration.",
+      "info"
+    );
+
+    // Keep the entered information available until the organiser can
+    // confirm the submission, instead of clearing it prematurely.
+  } catch (error) {
+    showStatus(
+      "We could not send the request. Check your connection and try again. Please avoid repeated submissions until the organiser checks the registration records.",
+      "error"
+    );
   } finally {
     submitButton.disabled = false;
-    submitButton.textContent = 'Submit Registration';
+    submitButton.textContent = "Submit Registration";
   }
 });
 </script>
