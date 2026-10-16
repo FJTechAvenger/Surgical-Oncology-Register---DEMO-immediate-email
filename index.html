@@ -93,7 +93,7 @@ footer{text-align:center;color:var(--muted);font-size:.82rem;padding:18px 8px 0}
   2. Paste its /exec URL into SCRIPT_URL below.
   3. Publish this page and test a submission before using it at the event.
 */
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzTrfVMu6ougXLStCr86SN1gE0LC_zKu0dMofrBVTKh3o6feDAtPhmkBylVFoIvGblC0g/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyh1XoKmHFVWBXHZQrcaXzB4YxFe_vuQMtsgfk8dUUwbzLfLXnpH6QhY4Zeyimqf00JVg/exec";
 
 const canvas = document.getElementById('signature');
 const ctx = canvas.getContext('2d');
@@ -142,7 +142,7 @@ form.addEventListener('submit', async e => {
   e.preventDefault();
   statusBox.style.display = 'block';
 
-  if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzTrfVMu6ougXLStCr86SN1gE0LC_zKu0dMofrBVTKh3o6feDAtPhmkBylVFoIvGblC0g/exec") {
+  if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbyh1XoKmHFVWBXHZQrcaXzB4YxFe_vuQMtsgfk8dUUwbzLfLXnpH6QhY4Zeyimqf00JVg/exec") {
     statusBox.textContent =if (
   !SCRIPT_URL ||
   !SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
