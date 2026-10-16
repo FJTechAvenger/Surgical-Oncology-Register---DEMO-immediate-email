@@ -230,7 +230,8 @@ form.addEventListener("submit", async event => {
 
   if (!form.reportValidity()) return;
 
- if (
+
+if (
   !SCRIPT_URL ||
   SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE" ||
   !SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
@@ -242,9 +243,9 @@ form.addEventListener("submit", async event => {
   );
   return;
 }
-    showStatus(
-      "Setup is incomplete. The organiser must enter the active Google Apps Script Web App URL ending in /exec.",
-      "error"
+
+// Continue with signature validation and form submission below.
+
     );" ||
       !SCRIPT_URL.endsWith("/exec")) {
     showStatus(
