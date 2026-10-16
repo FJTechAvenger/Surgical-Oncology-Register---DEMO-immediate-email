@@ -143,7 +143,15 @@ form.addEventListener('submit', async e => {
   statusBox.style.display = 'block';
 
   if (SCRIPT_URL === "https://script.google.com/macros/s/AKfycbzTrfVMu6ougXLStCr86SN1gE0LC_zKu0dMofrBVTKh3o6feDAtPhmkBylVFoIvGblC0g/exec") {
-    statusBox.textContent = 'Setup is not complete yet. The registration form has not sent or saved your details. The organiser must add the Google Apps Script Web App URL first.';
+    statusBox.textContent = if (
+  !SCRIPT_URL ||
+  SCRIPT_URL.includes("PASTE_YOUR") ||
+  !SCRIPT_URL.endsWith("/exec")
+) {
+  statusBox.textContent =
+    "Setup is incomplete. Please contact the organiser.";
+  return;
+}App URL first.';
     return;
   }
   if (!hasSignature) {
