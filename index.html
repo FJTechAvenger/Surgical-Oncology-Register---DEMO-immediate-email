@@ -1,5 +1,296 @@
 
 <!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#a30d58">
+<title>Attendee Registration | Surgical Oncology</title>
+<style>
+:root{--pink:#b51663;--deep:#8d0d4b;--navy:#17365d;--teal:#178c8c;--pale:#fff5f9;--ink:#243044;--muted:#667085;--line:#e5d5df}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(145deg,#fff5f9,#f2f7fc 65%,#edf8f6);line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:18px 12px 36px}
+.hero{background:linear-gradient(125deg,var(--deep),var(--pink) 60%,#63338d);color:#fff;text-align:center;padding:27px 18px;border-radius:20px 20px 0 0}
+.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:.76rem;font-weight:bold}
+h1{font-size:clamp(1.7rem,5vw,2.25rem);line-height:1.12;margin:10px 0}
+.theme{font-style:italic;font-weight:bold;font-size:1.1rem;margin:12px 0 5px}
+.hero p{margin:4px 0}
+.content{background:#fff;padding:clamp(18px,4vw,30px);border:1px solid #f0d7e3;border-top:0;border-radius:0 0 20px 20px;box-shadow:0 12px 32px #461e4112}
+.eventbar{background:#fbedf4;border:1px solid #edc8d9;padding:12px;border-radius:10px;margin-bottom:18px;text-align:center}
+h2{font-size:1.05rem;color:var(--deep);margin:22px 0 12px;padding-bottom:7px;border-bottom:2px solid #f3d7e5}
+.field{margin:14px 0}
+label{display:block;font-weight:bold;margin-bottom:6px}
+input,select,textarea{font:inherit;padding:12px;border:1px solid #d8c8d2;border-radius:9px;background:#fff}
+.field input,.field select,.field textarea{width:100%}
+input:focus,select:focus,textarea:focus{outline:3px solid #b5166320;border-color:var(--pink)}
+.note{background:#f1f8f8;border-left:4px solid var(--teal);padding:12px;border-radius:7px;font-size:.9rem;margin:16px 0}
+.sigbox{border:1px dashed #c9a8b9;border-radius:10px;padding:12px;background:#fffafd}
+canvas{width:100%;height:150px;display:block;touch-action:none;background:#fff;border:1px solid #e5d5df;border-radius:7px}
+.sigactions{display:flex;justify-content:flex-end;margin-top:7px}
+button{border:0;border-radius:9px;padding:12px 18px;font:inherit;font-weight:bold;cursor:pointer}
+.clear{background:#f2edf2;color:#49374a}
+.submit{width:100%;margin-top:18px;background:linear-gradient(100deg,var(--pink),#63338d);color:#fff}
+button:disabled{opacity:.65;cursor:wait}
+.status{display:none;padding:12px;border-radius:8px;background:#fff2d9;color:#754d00;margin-top:14px;overflow-wrap:anywhere}
+.status.error{display:block;background:#fff0f0;color:#8d1515}
+.status.info{display:block;background:#fff2d9;color:#754d00}
+footer{text-align:center;color:var(--muted);font-size:.82rem;padding:18px 8px 0}
+.small{font-size:.82rem;color:var(--muted)}
+.consent{display:flex;gap:9px;align-items:flex-start}
+.consent input{width:auto;flex:0 0 auto;margin-top:4px}
+.consent label{font-size:.82rem;font-weight:normal}
+@media(min-width:560px){.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.two .field{margin-top:8px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+<header class="hero">
+<div class="eyebrow">Ministry of Health &amp; Medical Services · Fiji</div>
+<h1>Attendee Registration</h1>
+<p><strong>Cancer Awareness &amp; Patient Care Education Programme</strong></p>
+<div class="theme">“Every Story is Unique, Every Journey Matters”</div>
+<p>Oncology Department · Colonial War Memorial Hospital</p>
+</header>
+
+<section class="content">
+<div class="eventbar">
+<strong>Topic: Surgical Oncology</strong><br>
+Friday, 23 October 2026<br>
+Colonial War Memorial Hospital · Midwifery Classroom
+</div>
+
+<p>Welcome. Please complete the form below to register your attendance.</p>
+
+<div class="note">
+<strong>Registration status:</strong> OPEN. Registration remains open until the organiser manually changes the arrangement.
+</div>
+
+<form id="registrationForm">
+<h2>Attendee Details</h2>
+
+<div class="field">
+<label for="fullName">Full name *</label>
+<input id="fullName" name="fullName" autocomplete="name" maxlength="120" required placeholder="Enter your full name">
+</div>
+
+<div class="two">
+<div class="field">
+<label for="department">Department / Organisation *</label>
+<input id="department" name="department" maxlength="160" required placeholder="Department or organisation">
+</div>
+<div class="field">
+<label for="email">Email address *</label>
+<input id="email" name="email" type="email" autocomplete="email" maxlength="200" required placeholder="name@example.com">
+</div>
+</div>
+
+<div class="field">
+<label for="phone">Contact number *</label>
+<input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="40" required placeholder="Enter contact number">
+</div>
+
+<div class="field">
+<label for="edp">EDP Number *</label>
+<input id="edp" name="edp" maxlength="80" required placeholder="Enter your EDP number">
+</div>
+
+<h2>Electronic Signature</h2>
+<p class="small">Sign in the box using your finger or mouse.</p>
+
+<div class="sigbox">
+<canvas id="signature" aria-label="Draw your signature here"></canvas>
+<div class="sigactions">
+<button class="clear" type="button" id="clearSignature">Clear signature</button>
+</div>
+</div>
+
+<div class="note">
+<strong>Privacy:</strong> Registration information should be used only for event administration and approved attendance or CPD records. Please do not enter patient information.
+</div>
+
+<div class="consent">
+<input type="checkbox" id="consent" required>
+<label for="consent">I confirm that the information provided is accurate and may be used for event registration and attendance records. *</label>
+</div>
+
+<button class="submit" id="submitButton" type="submit">Submit Registration</button>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+</form>
+</section>
+
+<footer>
+Organised by the Oncology Department<br>
+Colonial War Memorial Hospital · Fiji
+</footer>
+</main>
+
+<script>
+/*
+ * CWM Hospital Surgical Oncology Registration
+ * Registration remains open; no four-hour timer.
+ * Keep the field names aligned with the Google Apps Script.
+ */
+
+const SCRIPT_URL =
+  "https://script.google.com/macros/s/AKfycbwOwVU6etStlO1-xjMRuAw9JsAZn6vrg0ec7jfPd7a2Z9JoJC9VTq5RXpfy36bqrsyAdQ/exec";
+
+const canvas = document.getElementById("signature");
+const ctx = canvas.getContext("2d");
+const form = document.getElementById("registrationForm");
+const statusBox = document.getElementById("status");
+const submitButton = document.getElementById("submitButton");
+
+let drawing = false;
+let hasSignature = false;
+let lastPoint = null;
+
+function resizeCanvas() {
+  const ratio = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const previousImage = hasSignature ? canvas.toDataURL("image/png") : null;
+
+  canvas.width = Math.max(1, Math.round(rect.width * ratio));
+  canvas.height = Math.max(1, Math.round(150 * ratio));
+
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.lineWidth = 2;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#17365d";
+
+  if (previousImage) {
+    const img = new Image();
+    img.onload = () => ctx.drawImage(img, 0, 0, rect.width, 150);
+    img.src = previousImage;
+  }
+}
+
+function getPoint(event) {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
+}
+
+canvas.addEventListener("pointerdown", event => {
+  event.preventDefault();
+  drawing = true;
+  hasSignature = true;
+  lastPoint = getPoint(event);
+  canvas.setPointerCapture(event.pointerId);
+  ctx.beginPath();
+  ctx.moveTo(lastPoint.x, lastPoint.y);
+});
+
+canvas.addEventListener("pointermove", event => {
+  if (!drawing) return;
+  event.preventDefault();
+
+  const current = getPoint(event);
+  ctx.beginPath();
+  ctx.moveTo(lastPoint.x, lastPoint.y);
+  ctx.lineTo(current.x, current.y);
+  ctx.stroke();
+  lastPoint = current;
+});
+
+function stopDrawing() {
+  drawing = false;
+  lastPoint = null;
+}
+
+["pointerup", "pointercancel", "lostpointercapture"].forEach(eventName => {
+  canvas.addEventListener(eventName, stopDrawing);
+});
+
+document.getElementById("clearSignature").addEventListener("click", () => {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSignature = false;
+});
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function showStatus(message, type) {
+  statusBox.textContent = message;
+  statusBox.className = "status " + type;
+}
+
+form.addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!form.reportValidity()) return;
+
+  // Validate the URL format without rejecting a particular deployment ID.
+  if (
+    !SCRIPT_URL ||
+    SCRIPT_URL === "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE" ||
+    !SCRIPT_URL.startsWith("https://script.google.com/macros/s/") ||
+    !SCRIPT_URL.endsWith("/exec")
+  ) {
+    showStatus(
+      "Setup is incomplete. Please check the Google Apps Script Web App URL.",
+      "error"
+    );
+    return;
+  }
+
+  if (!hasSignature) {
+    showStatus("Please add your electronic signature before submitting.", "error");
+    return;
+  }
+
+  const payload = {
+    fullName: document.getElementById("fullName").value.trim(),
+    department: document.getElementById("department").value.trim(),
+    email: document.getElementById("email").value.trim(),
+    phone: document.getElementById("phone").value.trim(),
+    edp: document.getElementById("edp").value.trim(),
+    signature: canvas.toDataURL("image/png"),
+    consent: document.getElementById("consent").checked,
+    event: "Cancer Awareness & Patient Care Education Programme",
+    topic: "Surgical Oncology",
+    eventDate: "Friday, 23 October 2026",
+    venue: "Colonial War Memorial Hospital – Midwifery Classroom"
+  };
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Submitting…";
+  showStatus("Sending your registration for processing…", "info");
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8"
+      },
+      body: JSON.stringify(payload)
+    });
+
+    showStatus(
+      "The request was sent from this page, but delivery cannot be verified here. Please contact the Oncology Department if the organiser cannot confirm your registration.",
+      "info"
+    );
+
+    // Keep the form data available until the registration is confirmed.
+  } catch (error) {
+    showStatus(
+      "We could not send the request. Check your connection and try again. Please avoid repeated submissions until the organiser checks the registration records.",
+      "error"
+    );
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = "Submit Registration";
+  }
+});
+</script>
+</body>
+</html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
